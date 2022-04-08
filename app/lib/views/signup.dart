@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chatapp/widgets/widget.dart';
+import 'package:chatapp/services/auth.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -7,11 +8,38 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
+  bool isLoading = false;
+
+  AuthMethods authMethods = new AuthMethods();
+
+  final formKey = GlobalKey<FormState>();
+  TextEditingController usernameTextController = new TextEditingController();
+  TextEditingController emailTextController = new TextEditingController();
+  TextEditingController passwordTextController = new TextEditingController();
+
+  signIn() {
+    if (formKey.currentState!.validate()){
+      setState((){
+        isLoading = true;
+      });
+
+      authMethods.signUpWithEmail(
+        emailTextController.text,
+        passwordTextController.text
+      ).then((val){
+        print("$val");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(context),
-      body: SingleChildScrollView(
+      body: isLoading ?
+            Container(child: Center(child: CircularProgressIndicator())) :
+            SingleChildScrollView(
         child: Container(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -19,23 +47,44 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+
                 // username, email and password
-                SizedBox(height: 8),
-                TextField(
-                  style: textInputFieldStyle(),
-                  decoration: textInputFieldDeco("username"),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8),
+                      TextFormField(
+                        validator: (val){
+                          return "asdf";
+                        },
+                        controller: usernameTextController,
+                        style: textInputFieldStyle(),
+                        decoration: textInputFieldDeco("username"),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        validator: (val){
+                          return "flajsdf";
+                        },
+                        controller: emailTextController,
+                        style: textInputFieldStyle(),
+                        decoration: textInputFieldDeco("email"),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        obscureText: true,
+                        validator: (val){
+                          return "faljfe";
+                        },
+                        controller: passwordTextController,
+                        style: textInputFieldStyle(),
+                        decoration: textInputFieldDeco("password"),
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 8),
-                TextField(
-                  style: textInputFieldStyle(),
-                  decoration: textInputFieldDeco("email"),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  style: textInputFieldStyle(),
-                  decoration: textInputFieldDeco("password"),
-                ),
-                SizedBox(height: 8),
 
                 // forgot password
                 Container(

@@ -8,8 +8,15 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
 
+  final formKey = GlobalKey<FormState>();
   TextEditingController emailTextController = new TextEditingController();
   TextEditingController passwordTextController = new TextEditingController();
+
+  signIn() {
+    // if (formKey.currentState.validate()){
+    //
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +30,39 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+
                 // email and password
-                SizedBox(height: 8),
-                TextField(
-                  controller: emailTextController,
-                  style: textInputFieldStyle(),
-                  decoration: textInputFieldDeco("email"),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8),
+                      TextFormField(
+                        validator: (val){
+                          return val;
+                          // return RegExp(
+                          //   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          //   .hasMatch(val) ? null : "error";
+                        },
+                        controller: emailTextController,
+                        style: textInputFieldStyle(),
+                        decoration: textInputFieldDeco("email"),
+                      ),
+                      SizedBox(height: 8),
+                      TextFormField(
+                        obscureText: true,
+                        validator: (val){
+                          return val;
+                          // return val.length > 6 ? null : "error";
+                        },
+                        controller: passwordTextController,
+                        style: textInputFieldStyle(),
+                        decoration: textInputFieldDeco("password"),
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: passwordTextController,
-                  style: textInputFieldStyle(),
-                  decoration: textInputFieldDeco("password"),
-                ),
-                SizedBox(height: 8),
 
                 // forgot password
                 Container(
@@ -51,6 +77,11 @@ class _SignInState extends State<SignIn> {
 
                 // signin buttons
                 SizedBox(height: 8),
+                GestureDetector(
+                  onTap: (){
+                    signIn();
+                  },
+                ),
                 Container(
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width, //わからん

@@ -8,7 +8,7 @@ AppBar appBarMain(BuildContext context) {
   );
 }
 
-InputDecoration textInputFieldDeco(String hintText){
+InputDecoration textInputFieldDeco(String hintText) {
   return InputDecoration(
     hintText: hintText,
     hintStyle: TextStyle(
@@ -23,7 +23,7 @@ InputDecoration textInputFieldDeco(String hintText){
   );
 }
 
-TextStyle textInputFieldStyle(){
+TextStyle textInputFieldStyle() {
   return TextStyle(
     color: Colors.black,
     fontSize: 16,
