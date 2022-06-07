@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chatapp/widgets/widget.dart';
-import 'package:chatapp/services/auth.dart';
+import 'package:chatapp/modules/auth.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -8,27 +8,26 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  Authentication authMthd = new Authentication();
+
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController usernameTxtCtrl = new TextEditingController();
+  TextEditingController emailTxtCtrl = new TextEditingController();
+  TextEditingController passwordTxtCtrl = new TextEditingController();
 
   bool isLoading = false;
 
-  AuthMethods authMethods = new AuthMethods();
-
-  final formKey = GlobalKey<FormState>();
-  TextEditingController usernameTextController = new TextEditingController();
-  TextEditingController emailTextController = new TextEditingController();
-  TextEditingController passwordTextController = new TextEditingController();
-
-  signIn() {
-    if (formKey.currentState!.validate()){
+  signUp() {
+    if (_formKey.currentState!.validate()){
       setState((){
         isLoading = true;
       });
 
-      authMethods.signUpWithEmail(
-        emailTextController.text,
-        passwordTextController.text
-      ).then((val){
-        print("$val");
+      authMthd.passwordSignUp(
+        emailTxtCtrl.text,
+        passwordTxtCtrl.text
+      ).then((result){
+        print("$result");
       });
     }
   }
@@ -50,7 +49,7 @@ class _SignUpState extends State<SignUp> {
 
                 // username, email and password
                 Form(
-                  key: formKey,
+                  key: _formKey,
                   child: Column(
                     children: [
                       SizedBox(height: 8),
@@ -58,7 +57,7 @@ class _SignUpState extends State<SignUp> {
                         validator: (val){
                           return "asdf";
                         },
-                        controller: usernameTextController,
+                        controller: usernameTxtCtrl,
                         style: textInputFieldStyle(),
                         decoration: textInputFieldDeco("username"),
                       ),
@@ -67,7 +66,7 @@ class _SignUpState extends State<SignUp> {
                         validator: (val){
                           return "flajsdf";
                         },
-                        controller: emailTextController,
+                        controller: emailTxtCtrl,
                         style: textInputFieldStyle(),
                         decoration: textInputFieldDeco("email"),
                       ),
@@ -77,7 +76,7 @@ class _SignUpState extends State<SignUp> {
                         validator: (val){
                           return "faljfe";
                         },
-                        controller: passwordTextController,
+                        controller: passwordTxtCtrl,
                         style: textInputFieldStyle(),
                         decoration: textInputFieldDeco("password"),
                       ),
