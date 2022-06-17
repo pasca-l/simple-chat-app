@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:chatapp/widgets/widget.dart';
-import 'package:chatapp/modules/auth.dart';
+import 'package:app/widgets/widget.dart';
+import 'package:app/modules/auth.dart';
 
 class SignUp extends StatefulWidget {
   @override
