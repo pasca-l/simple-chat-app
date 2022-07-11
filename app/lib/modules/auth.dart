@@ -12,12 +12,7 @@ class Authentication {
       User? user = cred.user;
       return user;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-      return null;
+      return e.code;
     } catch (e) {
       print(e);
       return null;
@@ -33,11 +28,18 @@ class Authentication {
       User? user = cred.user;
       return user;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      return e.code;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future signOut() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      print(e);
       return null;
     }
   }

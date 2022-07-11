@@ -3,15 +3,15 @@ import 'package:app/modules/auth.dart';
 import 'package:app/widgets/appbar.dart';
 import 'package:app/widgets/form.dart';
 import 'package:app/widgets/snackbar.dart';
-import 'package:app/views/signin.dart';
+import 'package:app/views/signup.dart';
 import 'package:app/views/user_home.dart';
 
-class SignUp extends StatefulWidget {
+class SignIn extends StatefulWidget {
   @override
-  _SignUpState createState() => _SignUpState();
+  _SignInState createState() => _SignInState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignInState extends State<SignIn> {
   Authentication authMthd = new Authentication();
 
   final _formKey = GlobalKey<FormState>();
@@ -21,13 +21,13 @@ class _SignUpState extends State<SignUp> {
 
   bool isLoading = false;
 
-  signUp() {
+  SignIn() {
     if (_formKey.currentState!.validate()) {
       setState( () {
         isLoading = true;
       });
 
-      authMthd.passwordSignUp(
+      authMthd.passwordSignIn(
         emailTxtCtrl.text,
         passwordTxtCtrl.text
       ).then( (result) {
@@ -36,13 +36,13 @@ class _SignUpState extends State<SignUp> {
           isLoading = false;
         });
 
-        if (result == 'weak-password') {
+        if (result == 'user-not-found') {
           ScaffoldMessenger.of(context).showSnackBar(
-            errorSnackBar('The password provided is too weak.')
+            errorSnackBar('No user found for that email.')
           );
-        } else if (result == 'email-already-in-use') {
+        } else if (result == 'wrong-password') {
           ScaffoldMessenger.of(context).showSnackBar(
-            errorSnackBar('The account already exists for that email.')
+            errorSnackBar('Wrong password provided for that user.')
           );
         } else if (result == null){
           ScaffoldMessenger.of(context).showSnackBar(
@@ -70,13 +70,11 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             children: [
 
-              // username, email and password
+              // email and password
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    SizedBox(height: 8),
-                    authForm(usernameTxtCtrl, "username"),
                     SizedBox(height: 8),
                     authForm(emailTxtCtrl, "email"),
                     SizedBox(height: 8),
@@ -86,11 +84,11 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
 
-              // signup button
+              // signin button
               SizedBox(height: 16),
               GestureDetector(
                 onTap: () {
-                  signUp();
+                  SignIn();
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -105,7 +103,7 @@ class _SignUpState extends State<SignUp> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
-                    "Sign Up",
+                    "Sign In",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16
@@ -117,16 +115,18 @@ class _SignUpState extends State<SignUp> {
               SizedBox(height: 16),
               Row(
                 children: [
-                  Text("Already registered?"),
+                  Text("Don't have an account?"),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => SignIn())
+                        MaterialPageRoute(builder: (context) => SignUp())
                       );
                     },
                     child: Container(
-                      child: Text("Sign in"),
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.symmetric(horizontal:16, vertical:8),
+                      child: Text("Sign up"),
                     ),
                   ),
                 ],
