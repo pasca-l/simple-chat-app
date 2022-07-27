@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 TextFormField authForm(TextEditingController txtCtrl, String hintText) {
   return TextFormField(
     controller: txtCtrl,

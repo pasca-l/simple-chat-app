@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 AppBar appBarMain() {
   return AppBar(
     title: Text("simple chat app"),

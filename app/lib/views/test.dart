@@ -3,15 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:app/widgets/appbar.dart';
 import 'package:app/widgets/drawer.dart';
-import 'package:app/views/test.dart';
 
 
-class UserHome extends StatefulWidget {
+class TestPage extends StatefulWidget {
   @override
-  _UserHomeState createState() => _UserHomeState();
+  _TestPageState createState() => _TestPageState();
 }
 
-class _UserHomeState extends State<UserHome> {
+class _TestPageState extends State<TestPage> {
   final user = FirebaseAuth.instance.currentUser!;
 
   @override
@@ -25,16 +24,7 @@ class _UserHomeState extends State<UserHome> {
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
-              Text("${user.email!} HOME!!!!!!!!"),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TestPage())
-                  );
-                },
-                child: Text("press here"),
-              ),
+              Text("${user.email!} Next page!!!"),
             ],
           ),
         ),

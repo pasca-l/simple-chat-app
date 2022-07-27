@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:app/modules/auth.dart';
+import 'package:app/views/signin.dart';
+import 'package:app/views/meta.dart';
+
 import 'package:app/widgets/appbar.dart';
 import 'package:app/widgets/form.dart';
 import 'package:app/widgets/snackbar.dart';
-import 'package:app/views/signin.dart';
-import 'package:app/views/user_home.dart';
+
 
 class SignUp extends StatefulWidget {
   @override
@@ -12,48 +16,52 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  Authentication authMthd = new Authentication();
+  Authentication _authMthd = Authentication();
 
   final _formKey = GlobalKey<FormState>();
-  TextEditingController usernameTxtCtrl = new TextEditingController();
-  TextEditingController emailTxtCtrl = new TextEditingController();
-  TextEditingController passwordTxtCtrl = new TextEditingController();
+  bool _isLoading = false;
 
-  bool isLoading = false;
+  TextEditingController _usernameTxtCtrl = TextEditingController();
+  TextEditingController _emailTxtCtrl = TextEditingController();
+  TextEditingController _passwordTxtCtrl = TextEditingController();
 
-  signUp() {
+  @override
+  void dispose() {
+    _usernameTxtCtrl.dispose();
+    _emailTxtCtrl.dispose();
+    _passwordTxtCtrl.dispose();
+    super.dispose();
+  }
+
+  Future signUp() async {
     if (_formKey.currentState!.validate()) {
       setState( () {
-        isLoading = true;
+        _isLoading = true;
       });
 
-      authMthd.passwordSignUp(
-        emailTxtCtrl.text,
-        passwordTxtCtrl.text
+      await _authMthd.passwordSignUp(
+        _emailTxtCtrl.text.trim(),
+        _passwordTxtCtrl.text.trim()
       ).then( (result) {
 
         setState( () {
-          isLoading = false;
+          _isLoading = false;
         });
 
         if (result == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(
-            errorSnackBar('The password provided is too weak.')
+            errorSnackBar("The password provided is too weak.")
           );
         } else if (result == 'email-already-in-use') {
           ScaffoldMessenger.of(context).showSnackBar(
-            errorSnackBar('The account already exists for that email.')
+            errorSnackBar("The account already exists for that email.")
           );
-        } else if (result == null){
+        } else if (result == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            errorSnackBar('Some problem occured, please try again.')
-          );
-        } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => UserHome())
+            errorSnackBar("Some problem occured, please try again.")
           );
         }
+
       });
     }
   }
@@ -62,7 +70,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(),
-      body: isLoading ?
+      body: _isLoading ?
             Container(child: Center(child: CircularProgressIndicator())) :
             SingleChildScrollView(
         child: Container(
@@ -76,11 +84,11 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   children: [
                     SizedBox(height: 8),
-                    authForm(usernameTxtCtrl, "username"),
+                    authForm(_usernameTxtCtrl, "username"),
                     SizedBox(height: 8),
-                    authForm(emailTxtCtrl, "email"),
+                    authForm(_emailTxtCtrl, "email"),
                     SizedBox(height: 8),
-                    authForm(passwordTxtCtrl, "password"),
+                    authForm(_passwordTxtCtrl, "password"),
                     SizedBox(height: 8),
                   ],
                 ),
@@ -89,8 +97,14 @@ class _SignUpState extends State<SignUp> {
               // signup button
               SizedBox(height: 16),
               GestureDetector(
-                onTap: () {
-                  signUp();
+                onTap: () async {
+                  await signUp()
+                  .then( (value) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Meta())
+                    );
+                  });
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -114,19 +128,21 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
 
+              // to sign in page
               SizedBox(height: 16),
               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Already registered?"),
+                  Text("Already registered? "),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignIn())
-                      );
+                      Navigator.pop(context);
                     },
-                    child: Container(
-                      child: Text("Sign in"),
+                    child: Text(
+                      "Sign in",
+                      style: TextStyle(
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
                 ],
