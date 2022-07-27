@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 
-SnackBar errorSnackBar(String msg) {
-  return SnackBar(
-    content: Text(msg),
-    behavior: SnackBarBehavior.floating,
-    action: SnackBarAction(
-      label: "OK",
-      onPressed: () {},
-    ),
+void errorSnackbar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      behavior: SnackBarBehavior.floating,
+      action: SnackBarAction(
+        label: "OK",
+        onPressed: () {},
+      ),
+    )
   );
 }

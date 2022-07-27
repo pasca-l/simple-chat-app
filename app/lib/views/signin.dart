@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:app/modules/auth.dart';
+
 import 'package:app/views/signup.dart';
 
 import 'package:app/widgets/appbar.dart';
 import 'package:app/widgets/form.dart';
-import 'package:app/widgets/snackbar.dart';
 
 
 class SignIn extends StatefulWidget {
@@ -15,52 +15,19 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  Authentication _authMthd = Authentication();
-
   final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
+  final _formKey2 = GlobalKey<FormState>();
+  final _emailTxtCtrl = TextEditingController();
+  final _passwordTxtCtrl = TextEditingController();
 
-  TextEditingController _emailTxtCtrl = TextEditingController();
-  TextEditingController _passwordTxtCtrl = TextEditingController();
+  bool _isLoading = false;
+  bool _resetPassField = false;
 
   @override
   void dispose() {
     _emailTxtCtrl.dispose();
     _passwordTxtCtrl.dispose();
     super.dispose();
-  }
-
-  Future signIn() async {
-    if (_formKey.currentState!.validate()) {
-      setState( () {
-        _isLoading = true;
-      });
-
-      await _authMthd.passwordSignIn(
-        _emailTxtCtrl.text.trim(),
-        _passwordTxtCtrl.text.trim()
-      ).then( (result) {
-
-        setState( () {
-          _isLoading = false;
-        });
-
-        if (result == 'user-not-found') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            errorSnackBar("No user found for that email.")
-          );
-        } else if (result == 'user-disabled') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            errorSnackBar("User disabled for that email.")
-          );
-        } else if (result == 'wrong-password') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            errorSnackBar("Wrong password provided for that user.")
-          );
-        }
-
-      });
-    }
   }
 
   @override
@@ -93,7 +60,19 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 16),
               GestureDetector(
                 onTap: () {
-                  signIn();
+                  if (_formKey.currentState!.validate()) {
+                    setState( () {
+                      _isLoading = true;
+                    });
+                    signIn(
+                      context,
+                      _emailTxtCtrl.text.trim(),
+                      _passwordTxtCtrl.text.trim()
+                    );
+                    setState( () {
+                      _isLoading = false;
+                    });
+                  }
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -138,6 +117,63 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                 ],
+              ),
+
+              // change visibility of reset password field
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState( () {
+                        _resetPassField = !_resetPassField;
+                      });
+                    },
+                    child: Text(
+                      "Forgot password?",
+                      style: TextStyle(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              // reset password field
+              SizedBox(height: 32),
+              Visibility(
+                visible: _resetPassField,
+                child: Column(
+                  children: [
+
+                    Text("Send reset password link to:"),
+
+                    Form(
+                      key: _formKey2,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 8),
+                          authForm(_emailTxtCtrl, "email"),
+                          SizedBox(height: 8),
+                        ],
+                      ),
+                    ),
+
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey2.currentState!.validate()) {
+                          sendResetEmail(
+                            context,
+                            _emailTxtCtrl.text.trim()
+                          );
+                        }
+                      },
+                      child: Text("send"),
+                    ),
+
+                  ],
+                ),
               ),
 
             ],
