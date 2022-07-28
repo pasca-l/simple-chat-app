@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:app/widgets/appbar.dart';
-import 'package:app/widgets/drawer.dart';
-import 'package:app/views/test.dart';
+import 'package:app/modules/module_list.dart';
+import 'package:app/views/view_list.dart';
+import 'package:app/widgets/widget_list.dart';
 
 
 class UserHome extends StatefulWidget {
+  const UserHome({Key? key}) : super(key: key);
+
   @override
   _UserHomeState createState() => _UserHomeState();
 }
@@ -14,30 +16,29 @@ class UserHome extends StatefulWidget {
 class _UserHomeState extends State<UserHome> {
   final user = FirebaseAuth.instance.currentUser!;
 
+  final pages = [
+    HomePage(),
+    MessagePage(),
+    ProfilePage(),
+  ];
+  final ValueNotifier<int> pageIndex = ValueNotifier(0);
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: appBarMain(),
+      appBar: userAppBar(),
       drawer: menuDrawer(),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              Text("${user.email!} HOME!!!!!!!!"),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TestPage())
-                  );
-                },
-                child: Text("press here"),
-              ),
-            ],
-          ),
-        ),
+      bottomNavigationBar: homeNavigationBar(
+        onIndexChange: (index) {
+          pageIndex.value = index;
+        }
+      ),
+      body: ValueListenableBuilder(
+        valueListenable: pageIndex,
+        builder: (context, int value, child) {
+          return pages[value];
+        },
       ),
     );
 

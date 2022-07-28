@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 Future? emailSentDialog(BuildContext context) {
   showDialog(
     context: context,
@@ -9,7 +8,7 @@ Future? emailSentDialog(BuildContext context) {
         title: Text("Email sent!"),
         content: Text("Please check email for password reset."),
         actions: [
-          FlatButton(
+          TextButton(
             child: Text("OK"),
             onPressed: () {
               Navigator.pop(context);

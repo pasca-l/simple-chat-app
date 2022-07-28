@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:app/views/signin.dart';
-import 'package:app/views/user_home.dart';
-
+import 'package:app/views/view_list.dart';
 
 class Meta extends StatelessWidget {
   const Meta({Key? key}) : super(key: key);
@@ -17,7 +14,7 @@ class Meta extends StatelessWidget {
           if (snapshot.hasData) {
             return UserHome();
           } else {
-            return SignIn();
+            return Authentication();
           }
         },
       ),

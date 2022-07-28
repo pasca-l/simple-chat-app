@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:app/main.dart';
-
+import 'package:app/views/view_list.dart';
 
 class menuDrawer extends StatelessWidget {
+  menuDrawer({Key? key}) : super(key: key);
+
   final user = FirebaseAuth.instance.currentUser!;
 
   @override
@@ -27,7 +27,7 @@ class menuDrawer extends StatelessWidget {
               .then( (value) {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MyApp())
+                  MaterialPageRoute(builder: (context) => Meta())
                 );
               });
             },

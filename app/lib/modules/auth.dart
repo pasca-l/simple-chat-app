@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:app/widgets/dialog.dart';
-import 'package:app/widgets/snackbar.dart';
+import 'package:app/widgets/widget_list.dart';
 
 
 Future signIn(BuildContext context, String email, String password) async {
   try {
-    final cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: email,
       password: password
     );
@@ -18,13 +17,15 @@ Future signIn(BuildContext context, String email, String password) async {
       errorSnackbar(context, "User disabled for that email.");
     } else if (e.code == 'wrong-password') {
       errorSnackbar(context, "Wrong password provided for that user.");
+    } else {
+      errorSnackbar(context, "Some problem occured with error ${e.code}.");
     }
   }
 }
 
 Future signUp(BuildContext context, String email, String password) async {
   try {
-    final cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password
     );
@@ -33,8 +34,8 @@ Future signUp(BuildContext context, String email, String password) async {
       errorSnackbar(context, "The password provided is too weak.");
     } else if (e.code == 'email-already-in-use') {
       errorSnackbar(context, "The account already exists for that email.");
-    } else if (e.code == null) {
-      errorSnackbar(context, "Some problem occured, please try again.");
+    } else {
+      errorSnackbar(context, "Some problem occured with error ${e.code}.");
     }
   }
 }
