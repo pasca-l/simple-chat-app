@@ -1,3 +1,4 @@
+import 'package:app/modules/database.dart';
 import 'package:flutter/material.dart';
 import 'package:app/widgets/widget_list.dart';
 
@@ -17,15 +18,21 @@ AppBar userAppBar() {
     actions: [
       Padding(
         padding: EdgeInsets.only(right: 16),
-        child: UserAvatar()
+        child: UserAvatar(),
       )
     ],
   );
 }
 
-AppBar chatAppBar(String name) {
+AppBar chatAppBar(ChatroomData data) {
   return AppBar(
-    title: Text("${name}"),
+    title: Row(
+      children: [
+        UserAvatar(),
+        SizedBox(width: 20),
+        Text("${data.members}"),
+      ],
+    ),
     centerTitle: true,
     elevation: 10,
   );

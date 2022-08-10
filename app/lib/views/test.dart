@@ -27,7 +27,9 @@ class _TestPageState extends State<TestPage> {
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
+
               Text("${user.email!} Next page!!!"),
+
             ],
           ),
         ),

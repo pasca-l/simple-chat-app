@@ -32,56 +32,56 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return _isLoading
       ? Center(child: CircularProgressIndicator())
-      : SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-        child: Column(
-          children: [
-
-            SignInForm(
-              signInFormKey: _signInFormKey,
-              emailTxtCtrl: _emailTxtCtrl,
-              passwordTxtCtrl: _passwordTxtCtrl,
-            ),
-
-            // signin button
-            SizedBox(height: 16),
-            AuthButton(
-              signInMode: true,
-              onTap: () {
-                if (_signInFormKey.currentState!.validate()) {
-                  setState( () {
-                    _isLoading = true;
-                  });
-                  signIn(
-                    context,
-                    _emailTxtCtrl.text.trim(),
-                    _passwordTxtCtrl.text.trim(),
-                  );
-                  setState( () {
-                    _isLoading = false;
-                  });
+      : SafeArea(
+        minimum: EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+        
+              SignInForm(
+                signInFormKey: _signInFormKey,
+                emailTxtCtrl: _emailTxtCtrl,
+                passwordTxtCtrl: _passwordTxtCtrl,
+              ),
+        
+              // signin button
+              SizedBox(height: 16),
+              AuthButton(
+                signInMode: true,
+                onTap: () {
+                  if (_signInFormKey.currentState!.validate()) {
+                    setState( () {
+                      _isLoading = true;
+                    });
+                    signIn(
+                      context,
+                      _emailTxtCtrl.text.trim(),
+                      _passwordTxtCtrl.text.trim(),
+                    );
+                    setState( () {
+                      _isLoading = false;
+                    });
+                  }
                 }
-              }
-            ),
-
-            // to signup page
-            SizedBox(height: 16),
-            ToOtherPage(
-              signInMode: true,
-              onTap: widget.onPageChange,
-            ),
-
-            // reset password field
-            SizedBox(height: 16),
-            ResetPassFormField(
-              emailTxtCtrl: _emailTxtCtrl,
-            ),
-
-          ],
+              ),
+        
+              // to signup page
+              SizedBox(height: 16),
+              ToOtherPage(
+                signInMode: true,
+                onTap: widget.onPageChange,
+              ),
+        
+              // reset password field
+              SizedBox(height: 16),
+              ResetPassFormField(
+                emailTxtCtrl: _emailTxtCtrl,
+              ),
+        
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -107,6 +107,7 @@ class _ResetPassFormFieldState extends State<ResetPassFormField> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+
         // change visibility of form field
         Row(
           mainAxisAlignment: MainAxisAlignment.end,

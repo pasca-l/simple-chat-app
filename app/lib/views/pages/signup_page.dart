@@ -34,50 +34,50 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return _isLoading
       ? Center(child: CircularProgressIndicator())
-      : SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-        child: Column(
-          children: [
-
-            SignUpForm(
-              signUpFormKey: _signUpFormKey,
-              usernameTxtCtrl: _usernameTxtCtrl,
-              emailTxtCtrl: _emailTxtCtrl,
-              passwordTxtCtrl: _passwordTxtCtrl,
-            ),
-
-            // signup button
-            SizedBox(height: 16),
-            AuthButton(
-              signInMode: false,
-              onTap: () {
-                if (_signUpFormKey.currentState!.validate()) {
-                  setState( () {
-                    _isLoading = true;
-                  });
-                  signUp(
-                    context,
-                    _emailTxtCtrl.text.trim(),
-                    _passwordTxtCtrl.text.trim()
-                  );
-                  setState( () {
-                    _isLoading = false;
-                  });
-                }
-              },
-            ),
-
-            // to signin page
-            SizedBox(height: 16),
-            ToOtherPage(
-              signInMode: false,
-              onTap: widget.onPageChange,
-            ),
-
-          ],
+      : SafeArea(
+        minimum: EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+        
+              SignUpForm(
+                signUpFormKey: _signUpFormKey,
+                usernameTxtCtrl: _usernameTxtCtrl,
+                emailTxtCtrl: _emailTxtCtrl,
+                passwordTxtCtrl: _passwordTxtCtrl,
+              ),
+        
+              // signup button
+              SizedBox(height: 16),
+              AuthButton(
+                signInMode: false,
+                onTap: () {
+                  if (_signUpFormKey.currentState!.validate()) {
+                    setState( () {
+                      _isLoading = true;
+                    });
+                    signUp(
+                      context,
+                      _emailTxtCtrl.text.trim(),
+                      _passwordTxtCtrl.text.trim()
+                    );
+                    setState( () {
+                      _isLoading = false;
+                    });
+                  }
+                },
+              ),
+        
+              // to signin page
+              SizedBox(height: 16),
+              ToOtherPage(
+                signInMode: false,
+                onTap: widget.onPageChange,
+              ),
+        
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 }

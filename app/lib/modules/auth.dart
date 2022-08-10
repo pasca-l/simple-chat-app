@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:app/widgets/widget_list.dart';
-
 
 Future signIn(BuildContext context, String email, String password) async {
   try {

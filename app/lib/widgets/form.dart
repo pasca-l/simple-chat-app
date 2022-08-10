@@ -96,7 +96,9 @@ TextFormField _authFormField(TextEditingController txtCtrl, String hintText) {
         color: Colors.black45,
       ),
       focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.lightBlue)
+        borderSide: BorderSide(
+          color: Colors.lightBlue
+        ),
       ),
     ),
     validator: (val) {
