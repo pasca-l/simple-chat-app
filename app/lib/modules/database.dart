@@ -33,7 +33,10 @@ class Database {
         "sent_at": Timestamp.fromDate(message.sentAt),
     });
 
-    return 0;
+    return db.collection('chatrooms').doc(chatroom.uid)
+      .update({
+        "last_sent_at": Timestamp.fromDate(message.sentAt),
+      });
   }
 }
 
