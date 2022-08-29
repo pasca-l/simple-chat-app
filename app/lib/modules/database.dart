@@ -25,13 +25,15 @@ class Database {
   static Future<void> sendMessage(ChatroomData chatroom, MessageData message) {
     final db = FirebaseFirestore.instance;
 
-    return db.collection('chatrooms').doc(chatroom.uid)
+    db.collection('chatrooms').doc(chatroom.uid)
       .collection('messages')
       .add({
         "message": message.message,
         "sender_id": message.senderId,
         "sent_at": Timestamp.fromDate(message.sentAt),
     });
+
+    return 0;
   }
 }
 
