@@ -50,7 +50,7 @@ class _SignInPageState extends State<SignInPage> {
                 signInMode: true,
                 onTap: () {
                   if (_signInFormKey.currentState!.validate()) {
-                    setState( () {
+                    setState(() {
                       _isLoading = true;
                     });
                     signIn(
@@ -58,7 +58,7 @@ class _SignInPageState extends State<SignInPage> {
                       _emailTxtCtrl.text.trim(),
                       _passwordTxtCtrl.text.trim(),
                     );
-                    setState( () {
+                    setState(() {
                       _isLoading = false;
                     });
                   }
@@ -114,7 +114,7 @@ class _ResetPassFormFieldState extends State<ResetPassFormField> {
           children: [
             GestureDetector(
               onTap: () {
-                setState( () {
+                setState(() {
                   _resetPassField = !_resetPassField;
                 });
               },

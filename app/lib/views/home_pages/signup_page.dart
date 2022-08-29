@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 signInMode: false,
                 onTap: () {
                   if (_signUpFormKey.currentState!.validate()) {
-                    setState( () {
+                    setState(() {
                       _isLoading = true;
                     });
                     signUp(
@@ -61,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       _emailTxtCtrl.text.trim(),
                       _passwordTxtCtrl.text.trim()
                     );
-                    setState( () {
+                    setState(() {
                       _isLoading = false;
                     });
                   }

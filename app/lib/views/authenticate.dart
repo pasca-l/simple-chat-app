@@ -19,14 +19,14 @@ class _AuthenticationState extends State<Authentication> {
       body: _login
         ? SignInPage(
           onPageChange: () {
-            setState( () {
+            setState(() {
               _login = !_login;
             });
           },
         )
         : SignUpPage(
           onPageChange: () {
-            setState( () {
+            setState(() {
               _login = !_login;
             });
           },
