@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.indigo[50],
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Color(0xFFFCE4EC),
+        scaffoldBackgroundColor: Colors.lightGreen[200],
       ),
       home: Meta(),
     );

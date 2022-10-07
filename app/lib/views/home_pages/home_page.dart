@@ -17,16 +17,6 @@ class HomePage extends StatelessWidget {
     
             Text("${user.email!} HOME!!!!!!!!"),
     
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TestPage())
-                );
-              },
-              child: Text("press here"),
-            ),
-    
           ],
         ),
       ),

@@ -23,17 +23,3 @@ AppBar userAppBar() {
     ],
   );
 }
-
-AppBar chatAppBar(ChatroomData data) {
-  return AppBar(
-    title: Row(
-      children: [
-        UserAvatar(),
-        SizedBox(width: 20),
-        Text("${data.members}"),
-      ],
-    ),
-    centerTitle: true,
-    elevation: 10,
-  );
-}

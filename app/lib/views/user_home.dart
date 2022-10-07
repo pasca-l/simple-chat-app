@@ -16,7 +16,7 @@ class UserHome extends StatefulWidget {
 class _UserHomeState extends State<UserHome> {
   final user = FirebaseAuth.instance.currentUser!;
 
-  int pageIndex = 0;
+  int pageIndex = 1;
   final pages = [
     HomePage(),
     MessagePage(),
@@ -27,8 +27,9 @@ class _UserHomeState extends State<UserHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: userAppBar(),
+      floatingActionButton: HomeActionButton(selectedPage: pageIndex),
       drawer: menuDrawer(),
-      bottomNavigationBar: _homeNavigationBar(
+      bottomNavigationBar: HomeNavigationBar(
         selectedPage: pageIndex,
         onTap: (int index) {
           setState(() {
@@ -41,8 +42,8 @@ class _UserHomeState extends State<UserHome> {
   }
 }
 
-class _homeNavigationBar extends StatelessWidget {
-  const _homeNavigationBar({
+class HomeNavigationBar extends StatelessWidget {
+  const HomeNavigationBar({
     Key? key,
     required this.selectedPage,
     required this.onTap,
@@ -71,6 +72,56 @@ class _homeNavigationBar extends StatelessWidget {
         currentIndex: selectedPage,
         selectedItemColor: Colors.amber[800],
         onTap: onTap,
+    );
+  }
+}
+
+class HomeActionButton extends StatelessWidget {
+  const HomeActionButton({
+    Key? key,
+    required this.selectedPage,
+  }) : super(key: key);
+
+  final int selectedPage;
+
+  Icon _pageIcon(int selectedPage) {
+    switch (selectedPage) {
+      case 0:
+        return Icon(Icons.home);
+      case 1:
+        return Icon(Icons.add);
+      case 2:
+        return Icon(Icons.send);
+      default:
+        return Icon(Icons.close);
+    }
+  }
+
+  VoidCallback _buttonFunction(BuildContext context, int selectedPage) {
+    switch (selectedPage) {
+      case 0:
+        return () {};
+      case 1:
+        return () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatRoom(
+              chatroom: Database.createNewChatroom(),
+            ))
+          );
+        };
+      case 2:
+        return () {};
+      default:
+        return () {};
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: _buttonFunction(context, selectedPage),
+      child: _pageIcon(selectedPage),
     );
   }
 }
